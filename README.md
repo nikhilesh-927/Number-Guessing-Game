@@ -9,4 +9,4 @@ I added some CSS design and updated some Javascript so that it look better.
 
 # Checkout the project here:
 
-[https://nikhilesh-927.github.io/Number-Guessing-Game/]url("https://nikhilesh-927.github.io/Number-Guessing-Game/")
+https://nikhilesh-927.github.io/Number-Guessing-Game/
