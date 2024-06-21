@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Guessing Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Play&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      height: 95vh;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+	    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	    background-size: 400% 400%;
+	    animation: gradient 15s ease infinite;
+
+    }
+
+    @keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+    .container > h1 {
+      color: black;
+      font-family: serif;
+      background-color: #00F598;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .container > p#hint {
+      color: rgb(0, 0, 0);
+      padding: 10px;
+      background-color: #005EF4;
+      border-radius: 10px;
+    }
+
+    .container {
+      width: 45%;
+    }
+    
+    .container > h1, p {
+      width: 100%;
+      text-align: justify;
+    }
+
+    .form input[type="number"]{
+      font-family: "Play", sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      margin-top: 10px;
+      width: 100%;
+      padding: 5px;
+      border-radius: 10px;
+      border: none;
+      background-color: rgb(255, 255, 255);
+      outline-color: transparent;
+      outline-style: solid;
+      box-shadow: 0 0 0 2px #F50089;
+    }
+
+    .button {
+      margin-top: 10px;
+      text-align: center;
+      background-color: dark;
+    }
+
+    .guesssubmit {
+      padding: 10px;
+      border-radius: 10px;
+      background-color: rgb(105, 0, 204);
+      border: none;
+      color: white;
+    }
+
+    .button :hover{
+      background-color: rgb(54, 0, 104);
+      transition: 0.5s;
+    }
+
+    .button :focus {
+       outline-color: transparent;
+       outline-style:solid;
+       box-shadow: 0 0 0 2px #00F598;
+    }
+
+    .startAgain {
+      text-align: center;
+    }
+
+    .startAgain > button {
+      font-family: "Play", sans-serif;
+      font-size: 24px;
+      padding: 10px;
+      background-color: rgb(5, 197, 123);
+      color: black;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .startAgain :hover{
+      background-color: #53e7c5;
+    }
+
+    .lastResult {
+      font-family: "Play", sans-serif;
+      color: white;
+      width: 99%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .guesses {
+      font-family: "Play", sans-serif;
+      font-size: 22px;
+    }
+
+    .guessByUser {
+      background-color: orange;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+      <h1>Number Guessing Game</h1>
+      <p id="hint"><b>Tutorial : </b>We have chosen a number between 1 and 100. You have to guess that number within 10 turns. We will tell you if your prediction is right or wrong. We also tell you if your number is too high or too low.</p><br>
+  <div class="form">
+    <label for="guessnumber">Enter the number : </label>
+    <input type="number" class="guessnumber" id="guessnumber" min="1" max="100" required><br>
+    <div class="button">
+      <input type="submit" value="Submit Number" id="guesssubmit" class="guesssubmit">
+    </div>
+  </div>
+  <div class="resultParas">
+    <p class="guesses"></p>
+    <p class="lastResult"></p>
+    <p class="lowOrHi"></p>
+    <div class="startAgain"></div>
+  </div>
+    </div>
+
+    <script>
+      let randomNumber = Math.floor(Math.random() * 100) + 1;
+      const guesses = document.querySelector(".guesses");
+      const lastResult = document.querySelector(".lastResult");
+      const lowOrHi = document.querySelector(".lowOrHi");
+
+      const guesssubmit = document.querySelector(".guesssubmit");
+      const guessnumber = document.querySelector(".guessnumber");
+
+      let guessCount = 1;
+      let resetButton;
+
+
+      function checkGuess() {
+        const userGuess = Number(guessnumber.value);
+        if(guessCount === 1){
+          guesses.textContent = "Previous guesses:";
+        }
+
+        guesses.textContent = `${guesses.textContent} ${userGuess}`;
+
+        if(userGuess === randomNumber) {
+          lastResult.textContent = "Congratulations! You have got it right!";
+          lastResult.style.backgroundColor = "green";
+          lowOrHi.textContent = "";
+          setGameOver();
+        }
+        else if(guessCount === 10){
+          lastResult.textContent = "!!!GAME OVER!!!";
+          lowOrHi.textContent = "";
+          setGameOver();
+        }
+        else{
+          lastResult.textContent = "Wrong!";
+          lastResult.style.backgroundColor = "red";
+          if(userGuess < randomNumber-1){
+            lowOrHi.textContent = "Last guess was too low!";
+          }
+          else if(userGuess > randomNumber+1){
+            lowOrHi.textContent = "Last guess was too high";
+          }
+          else if((userGuess-1 === randomNumber) || (userGuess+1 === randomNumber)){
+            lowOrHi.textContent = "You are very close!!";
+          }
+        }
+
+        guessCount++;
+        guessnumber.value = "";
+        guessnumber.focus();
+      }
+      guesssubmit.addEventListener("click", checkGuess);
+
+      function setGameOver(){
+        // start a new game button modification
+        let startAgian = document.querySelector(".startAgain");
+
+        guessnumber.disabled = true;
+        guesssubmit.disabled = true;
+        resetButton = document.createElement("button");
+        resetButton.textContent = "Start new game";
+
+        // appending the start a new game button inside resultParas class
+        startAgian.append(resetButton);
+
+        resetButton.addEventListener("click", resetGame);
+      }
+
+      function resetGame() {
+        guessCount = 1;
+
+        const resetParas = document.querySelectorAll(".resetParas p");
+        for (const resetPara of resetParas) {
+          resetPara.textContent = "";
+        }
+
+        resetButton.parentNode.removeChild(resetButton);
+
+        guessnumber.disabled = false;
+        guesssubmit.disabled = false;
+        guessnumber.value = "";
+        guessnumber.focus();
+
+        lastResult.textContent = "New Game Started!!";
+        lastResult.style.backgroundColor = "green";
+        guesses.textContent = '';
+
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+      }
+      
+    </script>
+
+</body>
+</html>
