@@ -6,3 +6,7 @@ I have updated the Mozilla Developer Network's(MDN's) Number Guessing Game proje
 # What have I added?
 
 I added some CSS design and updated some Javascript so that it look better.
+
+# Checkout the project here:
+
+[https://nikhilesh-927.github.io/Number-Guessing-Game/]url("https://nikhilesh-927.github.io/Number-Guessing-Game/")
